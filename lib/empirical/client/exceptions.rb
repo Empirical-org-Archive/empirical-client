@@ -1,4 +1,4 @@
-module Quill
+module Empirical
   module Client
 
     class EndpointException < Exception; end;

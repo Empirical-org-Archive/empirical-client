@@ -1,15 +1,15 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'quill/client/version'
+require 'empirical/client/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "quill-client"
-  spec.version       = Quill::Client::VERSION
-  spec.authors       = ["Empirical.org", "Quinn Shanahan", "James Cox"]
+  spec.name          = "empirical-client"
+  spec.version       = Empirical::Client::VERSION
+  spec.authors       = ["Empirical.org", "James Cox"]
   spec.email         = ["developers@quill.org"]
   spec.summary       = "Quill.org API Client Wrapper"
-  spec.homepage      = "https://github.com/empirical-org/quill-client"
+  spec.homepage      = "https://github.com/empirical-org/empirical-client"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")

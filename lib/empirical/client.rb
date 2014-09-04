@@ -5,13 +5,13 @@ require 'faraday_middleware'
 require 'byebug'
 
 
-require "quill/client/version"
-require "quill/client/exceptions"
-require "quill/client/configuration"
-require "quill/client/endpoint"
-require "quill/client/endpoints/activities"
+require "empirical/client/version"
+require "empirical/client/exceptions"
+require "empirical/client/configuration"
+require "empirical/client/endpoint"
+require "empirical/client/endpoints/activities"
 
-module Quill
+module Empirical
   module Client
   end
 end

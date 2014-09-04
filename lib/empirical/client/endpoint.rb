@@ -1,11 +1,11 @@
-module Quill
+module Empirical
   module Client
     class Endpoint
 
       attr_accessor :token, :client, :config, :api_base
 
       def initialize(options = {})
-        @config = Quill::Client.configuration
+        @config = Empirical::Client.configuration
         @api_base = config.api_host + "/api/v1"
       end
 
@@ -52,7 +52,7 @@ module Quill
           message = result.body['meta']['message'] rescue "none"
            errors = result.body['meta']['errors']  rescue []
 
-          raise Quill::Client::EndpointException.new(message)
+          raise Empirical::Client::EndpointException.new(message)
         end
 
       end

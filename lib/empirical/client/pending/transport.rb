@@ -1,4 +1,4 @@
-module Quill
+module Empirical
   class Client
     module Transport
 

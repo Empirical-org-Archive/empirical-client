@@ -1,7 +1,7 @@
-module Quill
+module Empirical
   module Client
     module Endpoints
-      class Activities < Quill::Client::Endpoint
+      class Activities < Empirical::Client::Endpoint
 
         def find(id)
           # execute the request

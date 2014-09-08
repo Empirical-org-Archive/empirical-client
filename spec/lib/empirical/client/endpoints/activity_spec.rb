@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe Empirical::Client::Endpoints::Activities do
+describe Empirical::Client::Endpoints::Activity do
 
   let!(:uid) { 'BaJi4-PhNRz9um-o0u-w6Q' }
-  let(:activity) { Empirical::Client::Endpoints::Activities.new }
+  let(:activity) { Empirical::Client::Endpoints::Activity.new }
   let(:finder) { VCR.use_cassette('activity_get') { activity.find(uid) } }
 
   context "base" do

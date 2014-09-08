@@ -1,7 +1,7 @@
 module Empirical
   module Client
     module Endpoints
-      class Activities < Empirical::Client::Endpoint
+      class Activity < Empirical::Client::Endpoint
 
         def find(id)
           # execute the request

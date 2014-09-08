@@ -50,7 +50,9 @@ module Empirical
         end
 
         # process the response
-        if result.status.between?(200, 310) && !result.body.empty?
+        case result.status
+
+        when 200..310
 
           self.merge!(result.body)
 
@@ -59,6 +61,10 @@ module Empirical
           else
             raise Empirical::Client::EndpointException.new("message: #{meta.message}")
           end
+
+        when 404
+            raise Empirical::Client::EndpointException.new("Missing Record")
+
 
         else
           raise Empirical::Client::ApiException.new("Missing response body or API failure")

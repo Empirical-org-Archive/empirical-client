@@ -1,0 +1,46 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://localhost:3000/api/v1/activities/abc-def
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Faraday v0.9.0
+      Expect:
+      - ''
+  response:
+    status:
+      code: 404
+      message: Not Found
+    headers:
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      X-Platform-Spec:
+      - https://github.com/interagent/http-api-design
+      X-Api-Reference:
+      - http://docs.empirical.org/api-reference/
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Set-Cookie:
+      - request_method=GET; path=/
+      X-Request-Id:
+      - 87ce2bc2-043e-4649-88f6-7e0cd31a4c0b
+      X-Runtime:
+      - '0.193305'
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: ASCII-8BIT
+      string: '{"meta":{"message":"The resource you were looking for does not exist","status":"not_found"}}'
+    http_version: 
+  recorded_at: Mon, 08 Sep 2014 17:04:37 GMT
+recorded_with: VCR 2.9.3

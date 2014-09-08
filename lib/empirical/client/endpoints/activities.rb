@@ -5,15 +5,7 @@ module Empirical
 
         def find(id)
           # execute the request
-          response = request(:get, "activities/#{id}")
-
-          debugger
-
-          # check for metadata
-          if response.status == 'success'
-            return response.activity
-          else
-          end
+          request(:get, "activities/#{id}")
         end
 
 

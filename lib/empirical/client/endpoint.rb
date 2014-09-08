@@ -1,10 +1,14 @@
+require 'hashie'
+
 module Empirical
   module Client
-    class Endpoint
+    class Endpoint < ::Hashie::Mash
 
       attr_accessor :token, :client, :config, :api_base
 
       def initialize(options = {})
+        super
+
         @config = Empirical::Client.configuration
         @api_base = config.api_host + "/api/v1"
       end
@@ -38,21 +42,26 @@ module Empirical
         rescue Faraday::ConnectionFailed => e
           # download failed
           @config.logger.info "API Connection Failed - #{e}"
-          return false
+          raise Empirical::Client::ApiException.new("API Connection Failed - #{e}")
         rescue Faraday::TimeoutError => e
           # api timed out
           @config.logger.info "API Timed Out - #{e}"
-          return false
+          raise Empirical::Client::ApiException.new("API Connection Timed Out - #{e}")
         end
 
         # process the response
-        if result.status.between?(200, 310)
-          return Hashie::Mash.new(response.body)
-        else
-          message = result.body['meta']['message'] rescue "none"
-           errors = result.body['meta']['errors']  rescue []
+        if result.status.between?(200, 310) && !result.body.empty?
 
-          raise Empirical::Client::EndpointException.new(message)
+          self.merge!(result.body)
+
+          if meta.status == 'success'
+            return self
+          else
+            raise Empirical::Client::EndpointException.new("message: #{meta.message}")
+          end
+
+        else
+          raise Empirical::Client::ApiException.new("Missing response body or API failure")
         end
 
       end
@@ -67,7 +76,7 @@ module Empirical
           conn.response :json, content_type: /\bjson$/
           conn.response :mashify
 
-          conn.adapter Faraday.default_adapter
+          conn.adapter :patron # Faraday.default_adapter
         end
       end
     end

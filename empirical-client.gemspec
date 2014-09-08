@@ -22,12 +22,16 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'oauth2', '>= 0'
   spec.add_runtime_dependency 'activesupport'
   spec.add_runtime_dependency 'hashie'
+  spec.add_runtime_dependency 'patron'
 
   spec.add_development_dependency "rspec"
   spec.add_development_dependency "rspec-nc"
   spec.add_development_dependency "fuubar", '~> 2.0.0.rc1'
   spec.add_development_dependency "guard"
   spec.add_development_dependency "guard-rspec"
+  spec.add_development_dependency "guard-shell"
+  spec.add_development_dependency "guard-blink1"
+  spec.add_development_dependency "terminal-notifier-guard"
   spec.add_development_dependency "pry"
   spec.add_development_dependency "pry-remote"
   spec.add_development_dependency "pry-nav"

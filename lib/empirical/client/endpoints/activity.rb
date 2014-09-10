@@ -3,10 +3,7 @@ module Empirical
     module Endpoints
       class Activity < Empirical::Client::Endpoint
 
-        def find(id)
-          # execute the request
-          request(:get, "activities/#{id}")
-        end
+        endpoint_name "activities"
 
 
       end

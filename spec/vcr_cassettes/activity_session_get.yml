@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: http://localhost:3000/api/v1/activities/abc-def
+    uri: http://localhost:3000/api/v1/activity_sessions/wQrdU5nonDcjB222rYmwyQ
     body:
       encoding: US-ASCII
       string: ''
@@ -13,8 +13,8 @@ http_interactions:
       - ''
   response:
     status:
-      code: 404
-      message: Not Found
+      code: 200
+      message: OK
     headers:
       X-Frame-Options:
       - SAMEORIGIN
@@ -28,19 +28,21 @@ http_interactions:
       - http://docs.empirical.org/api-reference/
       Content-Type:
       - application/json; charset=utf-8
+      Etag:
+      - '"1c368d93e18268bfad5e5a2079ee7e44"'
       Cache-Control:
-      - no-cache
+      - max-age=0, private, must-revalidate
       Set-Cookie:
       - request_method=GET; path=/
       X-Request-Id:
-      - 3f8d8537-bf28-4056-9a03-21d9cdd33e49
+      - 1bc5744f-7b3a-4613-869a-6b09fdf29b1e
       X-Runtime:
-      - '0.008612'
+      - '0.008840'
       Transfer-Encoding:
       - chunked
     body:
       encoding: ASCII-8BIT
-      string: '{"meta":{"message":"The resource you were looking for does not exist","status":"not_found"}}'
+      string: '{"activity_session":{"uid":"wQrdU5nonDcjB222rYmwyQ","percentage":null,"time_spent":null,"state":"unstarted","completed_at":null,"data":null,"temporary":null,"activity_uid":"BaJi4-PhNRz9um-o0u-w6Q","anonymous":null},"meta":{"status":"success","message":null,"errors":null}}'
     http_version: 
   recorded_at: Wed, 10 Sep 2014 15:33:55 GMT
 recorded_with: VCR 2.9.3

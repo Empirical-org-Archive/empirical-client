@@ -4,35 +4,50 @@ module Empirical
   module Client
     class Endpoint < ::Hashie::Mash
 
-      attr_accessor :token, :client, :config, :api_base
+      attr_accessor :id, :token, :client, :config, :api_base
 
       def initialize(options = {})
         super
 
+        @id = options.fetch(:id, nil)
         @config = Empirical::Client.configuration
-        @api_base = config.api_host + "/api/v1"
+        @api_base = "#{config.api_host}/api/v1".gsub(%r{(?<!:)//}, "/")
       end
 
 
-      # gets a list of all items, paginate style
-      def all(limit = 25, offset = 0)
+      # class methods for singleton access
+
+      class << self
+
+        attr_accessor :endpoint_path
+
+        def endpoint_name(name)
+          @endpoint_path = name
+        end
+
+        def attributes(*args)
+          #FIXME - noop currently
+
+        end
+
+        # gets a list of all items, paginate style
+        def all(limit = 25, offset = 0)
+          raise NotImplementedError
+        end
+
+        # finds an item for a single id
+        def find(id, params = {})
+          item = new(id: id)
+          item.request(:get, "#{endpoint_path}/#{id}")
+        end
+
+      end
+
+      # saves changes for an item
+      def save(params)
         raise NotImplementedError
       end
 
-      # finds an item for a single id
-      def find(id, params = {})
-        raise NotImplementedError
-      end
-
-      # creates an item
-      def create(params)
-        raise NotImplementedError
-      end
-
-      # updates an item
-      def update(id, params)
-        raise NotImplementedError
-      end
 
       def request(verb, path, &block)
         begin
@@ -61,11 +76,8 @@ module Empirical
           else
             raise Empirical::Client::EndpointException.new("message: #{meta.message}")
           end
-
         when 404
-            raise Empirical::Client::EndpointException.new("Missing Record")
-
-
+          raise Empirical::Client::EndpointException.new("Missing Record")
         else
           raise Empirical::Client::ApiException.new("Missing response body or API failure")
         end

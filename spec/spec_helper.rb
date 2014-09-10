@@ -2,12 +2,14 @@ require 'pry'
 require 'byebug'
 require 'awesome_print'
 require 'vcr'
+require 'webmock'
 
 require 'empirical/client'
 
 VCR.configure do |c|
   c.cassette_library_dir = 'spec/vcr_cassettes'
-  c.hook_into :faraday
+  c.hook_into :webmock
+  # c.debug_logger = STDOUT
 
   c.ignore_request do |req|
     URI(req.uri).port == 80808

@@ -29,15 +29,15 @@ http_interactions:
       Content-Type:
       - application/json; charset=utf-8
       Etag:
-      - '"c66ff5a68a06e444c7d8801f48ca5571"'
+      - '"4f6b5926f6c80f1c365158dd3e8c9953"'
       Cache-Control:
       - max-age=0, private, must-revalidate
       Set-Cookie:
       - request_method=GET; path=/
       X-Request-Id:
-      - 95e51d0d-f8e9-4952-a043-52b391e2f9d9
+      - 2ddf340d-6641-49f5-b961-d686cd72ed0e
       X-Runtime:
-      - '0.251355'
+      - '0.011913'
       Transfer-Encoding:
       - chunked
     body:
@@ -53,10 +53,10 @@ http_interactions:
         16 days crossing 800 miles of ocean. The remaining men were then rescued {+in-on|8}
         August of 1916. Amazingly, Shackleton did not {+lose-loose|9} anyone on the
         trip. ","instructions":"There are **nine errors** in this passage. *To edit
-        a word, click on it and re-type it.*"},"created_at":"2013-09-14T00:01:09.788Z","updated_at":"2014-04-18T22:58:11.400Z","classification":{"uid":"IACa8Egt7CvVYgtHPtEn2w","name":"Story","key":"story","form_url":"http://quill-questions-module.herokuapp.com/stories/form","module_url":"http://quill-questions-module.herokuapp.com/stories/module","created_at":"2014-04-19T00:05:03.052Z","updated_at":"2014-04-19T00:05:03.052Z"},"topic":{"id":1,"name":"111.
+        a word, click on it and re-type it.*"},"created_at":"2013-09-14T00:01:09.788Z","updated_at":"2014-04-18T22:58:11.400Z","classification":{"uid":"IACa8Egt7CvVYgtHPtEn2w","name":"Story","key":"story","form_url":"http://localhost:4000/stories/form","module_url":"http://localhost:4000/stories/module","created_at":"2014-04-19T00:05:03.052Z","updated_at":"2014-04-19T00:05:03.052Z"},"topic":{"id":1,"name":"111.
         Shackleton Returns from the Antarctic.","created_at":"2013-09-14T00:01:09.788Z","updated_at":"2014-04-18T22:58:11.400Z","section":{"id":16,"name":"Custom
         Middle School Lessons","created_at":"2013-11-12T18:40:02.327Z","updated_at":"2013-11-12T18:40:02.327Z","workbook":{"id":1,"title":"Common
         Core workbook","created_at":"2013-09-12T22:27:38.058Z","updated_at":"2013-09-12T22:27:38.058Z"}}}},"meta":{"status":"success","message":null,"errors":null}}'
     http_version: 
-  recorded_at: Mon, 08 Sep 2014 17:13:28 GMT
+  recorded_at: Wed, 10 Sep 2014 15:33:55 GMT
 recorded_with: VCR 2.9.3

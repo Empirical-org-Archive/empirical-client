@@ -8,6 +8,7 @@ require 'byebug'
 require "empirical/client/version"
 require "empirical/client/exceptions"
 require "empirical/client/configuration"
+require "empirical/client/oauth"
 require "empirical/client/endpoint"
 require "empirical/client/endpoints/activity"
 require "empirical/client/endpoints/activity_session"

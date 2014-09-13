@@ -13,7 +13,6 @@ module Empirical
         @id = options.fetch(:id, nil)
         @config = Empirical::Client.configuration
         @api_base = "#{config.api_host}/api/v1".gsub(%r{(?<!:)//}, "/")
-        @data = Hashie::Mash.new
       end
 
 
@@ -55,31 +54,47 @@ module Empirical
 
       end
 
-
-      def save
-
-        # send req to server
-        response = client.post do |req|
-          req.url self.class.endpoint_path
-          req.headers['Content-Type'] = 'application/json'
-          req.body = self.to_json
-        end
-
-        # do something with response
-
-        ap response
-
-      end
-
       def as_json
         {}
       end
 
       def to_json
-        debugger
         JSON.dump(as_json)
       end
 
+      def save
+        begin
+          result = self.id.nil? ? post : put
+
+        rescue Faraday::ConnectionFailed => e
+          # download failed
+          @config.logger.info "API Connection Failed - #{e}"
+          raise Empirical::Client::ApiException.new("API Connection Failed - #{e}")
+        rescue Faraday::TimeoutError => e
+          # api timed out
+          @config.logger.info "API Timed Out - #{e}"
+          raise Empirical::Client::ApiException.new("API Connection Timed Out - #{e}")
+        end
+
+        # process the response
+        case result.status
+
+        when 200..310
+
+          self.merge!(result.body)
+
+          if meta.status == 'success'
+            return self
+          else
+            raise Empirical::Client::EndpointException.new("message: #{meta.message}")
+          end
+        when 404
+          raise Empirical::Client::EndpointException.new("Missing Record")
+        else
+          raise Empirical::Client::ApiException.new("[Status: #{result.status}] Missing response body or API failure")
+        end
+
+      end
 
       def request(verb, path)
         begin
@@ -112,7 +127,7 @@ module Empirical
         when 404
           raise Empirical::Client::EndpointException.new("Missing Record")
         else
-          raise Empirical::Client::ApiException.new("Missing response body or API failure")
+          raise Empirical::Client::ApiException.new("[Status: #{result.status}] Missing response body or API failure")
         end
 
       end
@@ -121,6 +136,22 @@ module Empirical
 
       def data_keys
         keys.map(&:to_sym) - self.class.api_keys
+      end
+
+      def post
+        client.post do |req|
+          req.url self.class.endpoint_path
+          req.headers['Content-Type'] = 'application/json'
+          req.body = self.to_json
+        end
+      end
+
+      def put
+        client.put do |req|
+          req.url "#{self.class.endpoint_path}/#{id}"
+          req.headers['Content-Type'] = 'application/json'
+          req.body = self.to_json
+        end
       end
 
       def client

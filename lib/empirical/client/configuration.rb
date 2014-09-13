@@ -18,7 +18,9 @@ module Empirical
       attr_accessor :api_host, :client_secret, :client_id, :access_token, :logger
 
       def initialize
-        @api_host = 'http://localhost:3000/'
+             @api_host = ENV.fetch('QUILL_MAIN_APP_URL', '')
+            @client_id = ENV.fetch('QUILL_CLIENT_ID', '')
+        @client_secret = ENV.fetch('QUILL_CLIENT_SECRET', '')
       end
 
       def logger

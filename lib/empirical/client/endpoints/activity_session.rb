@@ -11,11 +11,9 @@ module Empirical
 
         def as_json
           rv = {data: {}}
+
           self.class.api_keys.each { |x| rv[x] = self.send(x) }
-
-          debugger
-          data_keys.each { |x| rv[:data][x] = self.send(x) }
-
+          data_keys.map { |x| rv[:data][x] = self.send(x).to_yaml }
           return rv
         end
 

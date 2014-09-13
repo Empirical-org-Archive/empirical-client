@@ -104,12 +104,16 @@ module Empirical
           end
         rescue Faraday::ConnectionFailed => e
           # download failed
-          @config.logger.info "API Connection Failed - #{e}"
+          @config.logger.warn "API Connection Failed - #{e}"
           raise Empirical::Client::ApiException.new("API Connection Failed - #{e}")
         rescue Faraday::TimeoutError => e
           # api timed out
-          @config.logger.info "API Timed Out - #{e}"
+          @config.logger.warn "API Timed Out - #{e}"
           raise Empirical::Client::ApiException.new("API Connection Timed Out - #{e}")
+        rescue Faraday::ParsingError => e
+          @config.logger.warn "API Parsing Error: #{e}"
+          raise Empirical::Client::ApiException.new("API Parsing Error - #{e}")
+
         end
 
         # process the response

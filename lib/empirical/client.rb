@@ -2,8 +2,11 @@ require 'oauth2'
 require 'faraday'
 require 'faraday_middleware'
 
-require 'byebug'
-
+begin
+  require 'byebug'
+rescue LoadError
+  # lazy for development
+end
 
 require "empirical/client/version"
 require "empirical/client/exceptions"

@@ -3,6 +3,7 @@ require 'hashie'
 module Empirical
   module Client
     class Endpoint < ::Hashie::Mash
+      include Hashie::Extensions::Mash::SafeAssignment
 
       attr_accessor :id, :token, :client, :config, :api_base
 
@@ -12,6 +13,7 @@ module Empirical
         @id = options.fetch(:id, nil)
         @config = Empirical::Client.configuration
         @api_base = "#{config.api_host}/api/v1".gsub(%r{(?<!:)//}, "/")
+        @data = Hashie::Mash.new
       end
 
 
@@ -19,10 +21,20 @@ module Empirical
 
       class << self
 
-        attr_accessor :endpoint_path
+        attr_accessor :endpoint_path, :api_key_list
+
+        def api_keys(*keys)
+          @api_key_list ||= keys.flatten
+        end
 
         def endpoint_name(name)
           @endpoint_path = name
+        end
+
+        def inherited(subclass)
+          super
+          subclass.api_keys(api_key_list) unless api_key_list.nil?
+          subclass.endpoint_name(endpoint_path)
         end
 
         def attributes(*args)
@@ -43,15 +55,36 @@ module Empirical
 
       end
 
-      # saves changes for an item
-      def save(params)
-        raise NotImplementedError
+
+      def save
+
+        # send req to server
+        response = client.post do |req|
+          req.url self.class.endpoint_path
+          req.headers['Content-Type'] = 'application/json'
+          req.body = self.to_json
+        end
+
+        # do something with response
+
+        ap response
+
+      end
+
+      def as_json
+        {}
+      end
+
+      def to_json
+        debugger
+        JSON.dump(as_json)
       end
 
 
-      def request(verb, path, &block)
+      def request(verb, path)
         begin
-          result = client.send(verb, path) do
+          result = client.send(verb, path) do |req|
+
             yield if block_given?
           end
         rescue Faraday::ConnectionFailed => e
@@ -84,15 +117,18 @@ module Empirical
 
       end
 
-
       private
+
+      def data_keys
+        keys.map(&:to_sym) - self.class.api_keys
+      end
+
       def client
         @client ||= Faraday.new @api_base do |conn|
           conn.request :oauth2, @token
           conn.request :json
 
           conn.response :json, content_type: /\bjson$/
-          conn.response :mashify
 
           conn.adapter :patron # Faraday.default_adapter
         end

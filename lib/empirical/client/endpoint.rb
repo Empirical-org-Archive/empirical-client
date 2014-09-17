@@ -63,16 +63,22 @@ module Empirical
       end
 
       def save
+        tries ||= 3
+
         begin
           result = self.id.nil? ? post : put
 
         rescue Faraday::ConnectionFailed => e
           # download failed
-          @config.logger.info "API Connection Failed - #{e}"
+          @config.logger.warn "API Connection Failed, try: #{3- tries} - #{e}"
+          retry unless (tries -= 1).zero?
+
           raise Empirical::Client::ApiException.new("API Connection Failed - #{e}")
         rescue Faraday::TimeoutError => e
           # api timed out
-          @config.logger.info "API Timed Out - #{e}"
+          @config.logger.warn "API Timed Out, try: #{3- tries} - #{e}"
+          retry unless (tries -= 1).zero?
+
           raise Empirical::Client::ApiException.new("API Connection Timed Out - #{e}")
         end
 
@@ -97,6 +103,8 @@ module Empirical
       end
 
       def request(verb, path)
+        tries ||= 3
+
         begin
           result = client.send(verb, path) do |req|
 
@@ -104,11 +112,15 @@ module Empirical
           end
         rescue Faraday::ConnectionFailed => e
           # download failed
-          @config.logger.warn "API Connection Failed - #{e}"
+          @config.logger.warn "API Connection Failed, try: #{3- tries} - #{e}"
+          retry unless (tries -= 1).zero?
+
           raise Empirical::Client::ApiException.new("API Connection Failed - #{e}")
         rescue Faraday::TimeoutError => e
           # api timed out
-          @config.logger.warn "API Timed Out - #{e}"
+          @config.logger.warn "API Timed Out, try: #{3- tries} - #{e}"
+          retry unless (tries -= 1).zero?
+
           raise Empirical::Client::ApiException.new("API Connection Timed Out - #{e}")
         rescue Faraday::ParsingError => e
           @config.logger.warn "API Parsing Error: #{e}"

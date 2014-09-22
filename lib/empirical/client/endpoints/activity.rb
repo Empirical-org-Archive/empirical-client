@@ -5,6 +5,7 @@ module Empirical
 
         endpoint_name "activities"
 
+        api_keys :name, :description, :activity_classification_id, :topic_id, :flags
 
       end
     end

@@ -55,7 +55,11 @@ module Empirical
       end
 
       def as_json
-        {}
+        rv = {data: {}}
+
+        self.class.api_keys.each { |x| rv[x] = self.send(x) }
+        data_keys.map { |x| rv[:data][x] = self.send(x).to_yaml }
+        return rv
       end
 
       def to_json
@@ -151,7 +155,12 @@ module Empirical
       private
 
       def data_keys
-        keys.map(&:to_sym) - self.class.api_keys
+        keys.map(&:to_sym) - ignored_keys - self.class.api_keys
+      end
+
+      def ignored_keys
+        # don't persist these over the air
+        [self.class.endpoint_path.singularize.to_sym, :meta, :id]
       end
 
       def post

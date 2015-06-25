@@ -181,7 +181,7 @@ module Empirical
 
       def client
         @client ||= Faraday.new @api_base do |conn|
-          conn.request :oauth2, @token
+          conn.request :oauth2, @config.access_token
           conn.request :json
 
           conn.response :json, content_type: /\bjson$/

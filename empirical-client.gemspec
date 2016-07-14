@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["developers@quill.org"]
   spec.summary       = "Quill.org API Client Wrapper"
   spec.homepage      = "https://github.com/empirical-org/empirical-client"
-  spec.license       = "MIT"
+  spec.license       = "AGPL-3.0"
 
   spec.files         = `git ls-files -z`.split("\x0")
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
